@@ -74,6 +74,10 @@ React 官方文档 https://reactjs.org/docs/getting-started.html
 
 ##### JSX
 
+###### 运行基础
+
+Virtual DOM
+
 ###### 本质
 
 ###### 如何使用
@@ -85,3 +89,26 @@ React 官方文档 https://reactjs.org/docs/getting-started.html
 1. React 认为小写的 tag 是原生 DOM 节点， 如 div
 2. 大写字母开头为自定义组件
 3. JSX 标记可以直接使用属性语法，例如\<menu.item\>
+
+##### Virtual DOM
+
+1. 广度优先分层比较
+
+2. 节点跨层移动
+3. 算法复杂度 O(n)
+4. 虚拟 DOM 如何计算 diff
+5. key 属性的作用
+
+##### 组件设计模式：高阶组件(High Order Component)和函数作为子组件(Render Props)
+
+- HOC
+
+  高阶组件接受组件作为参数，返回新的组件
+
+- Render Props
+
+##### Context API
+
+- 组件间通信, React.createContext()
+- Provider
+- Comsumer

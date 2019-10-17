@@ -25,6 +25,9 @@ But with React Hooks, we use function components and make them stateful with the
 
 #### useState
 
+> 1. Add state to functional components
+> 2. Preserve values between renders and trigger a re-render of the component 
+
 `useState` comes built-in with React and can be accessed via `React.useState`.
 
 It takes in a single argument, the initial value for that piece of state, and returns an array with the first item being the state value and the second item being a way to update that state.

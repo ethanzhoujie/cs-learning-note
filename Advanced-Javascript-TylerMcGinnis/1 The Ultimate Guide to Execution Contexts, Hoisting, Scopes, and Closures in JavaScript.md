@@ -2,13 +2,13 @@
 
 ### 1. Execution Context
 
-> Just like functions/modules/packages allow you to manage the complexity of writing code, Execution Contexts allow the JavaScript engine to manage the complexity of interpreting and running your code. 
+**Execution Contexts** allow the JavaScript engine to manage the complexity of interpreting and running your code. 
 
 #### 1.1 Global Execution Context
 
 ##### 1.1.1 How do the Execution Context get created and what do they consist of?
 
-Execution Context consist of two things - **a global object** and a variable called **this**
+Execution Context consist of two things - **a global object** and a variable called `this`
 
  `this` will reference the global object which will be `window` if you’re running JavaScript in the browser 
 
@@ -21,12 +21,10 @@ this === global // true, in Node Environment
 
 ##### 1.1.2 Two phases: `Creation` phase and `Execution` phase
 
-[THIS LINK](https://tylermcginnis.com/javascript-visualizer/?code=var name %3D 'Tyler' var handle %3D '%40tylermcginnis' function getUser () {  return {    name%3A name%2C    handle%3A handle  } }).
-
-| Creation Phase                                               |                 Execution Phase                  |
-| :----------------------------------------------------------- | :----------------------------------------------: |
-| <img src="./assets/creation-phase.png" alt="creation-phase" /> | ![execution-phase](./assets/execution-phase.png) |
-| 1. Create a global object(window or global). <br />2. Create an object called “this”. <br />3. Set up memory space for variables and functions. <br />4. Assign variable declarations a default value of “undefined” while placing any function declarations in memory. |                                                  |
+| Creation Phase                                               | Execution Phase                                              |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| <img src="./assets/creation-phase.png" alt="creation-phase" /> | ![execution-phase](./assets/execution-phase.png)             |
+| 1. Create a global object(window or global). <br />2. Create an object called “this”. <br />3. Set up memory space for variables and functions. <br />4. Assign variable declarations a default value of “undefined” while placing any function declarations in memory. | It's not until the `Execution` phase where the JavaScript engine starts running your code line by line and executing it. And assign the real values to the variables already living in memory. |
 
 [JavaScript Visualizer](https://tylermcginnis.com/javascript-visualizer) 
 
@@ -48,11 +46,15 @@ It’s created whenever a function is **invoked**.
 
 ### 2. Hoisting
 
-> The process of assigning variable declarations a default value of `undefined` during the creation phase is called **Hoisting**.
+The process of assigning variable declarations a default value of `undefined` during the creation phase is called **Hoisting**.
 
 ### 3. Scopes
 
-This process of the JavaScript engine going one by one and checking each individual parent Execution Context if a variable doesn’t exist in the local Execution Context is called the `Scope Chain`. JavaScript Visualizer shows the Scope Chain by having each new Execution Context indented and with a unique colored background. Visually you can see that any child Execution Context can reference any variables located in any of its parent Execution Contexts, but not vice versa.
+Scope is The current context of execution.
+
+This process of the JavaScript engine going one by one and checking each individual parent Execution Context if a variable doesn’t exist in the local Execution Context is called the `Scope Chain`. 
+
+Any child Execution Context can reference any variables located in any of its parent Execution Contexts, but not vice versa.
 
 ### 4. Closures
 

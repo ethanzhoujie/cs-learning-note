@@ -2,11 +2,35 @@
 
 ### Callback
 
-This highlights some important concepts of the JavaScript language. First, just as you can pass a string or a number as an argument to a function, so too can you pass a reference to a function as an argument. When you do this the function you’re passing as an argument is called a **callback** function and the function you’re passing the callback function to is called a **higher order function**.
+**Callback Pattern**
 
-The first, and what we see in the `.map` and `_.filter`examples, is a nice abstraction over turning one value into another. 
+```js
+function add (x, y) {
+	return x + y;
+}
 
-The second, and what we see in the jQuery example, is delaying execution of a function until a particular time. 
+function higherOrderFunction (x, callback) {
+  return callback(x, 5);
+}
+
+higherOrderFunction(10, add);
+```
+
+This highlights some important concepts of the JavaScript language. 
+
+First, just as you can pass a string or a number as an argument to a function, so too can you pass a reference to a function as an argument. When you do this the function you’re passing as an argument is called a **callback** function and the function you’re passing the callback function to is called a **higher order function**.
+
+**Two use cases of callback:**
+
+- The first, and what we see in the `.map` and `_.filter`examples, is a nice abstraction over turning one value into another. 
+
+
+- The second, and what we see in the jQuery example, is delaying execution of a function until a particular time. 
+
+**Callback Defects:**
+
+- Callback Hell: Too many nested callbacks will cause readability issue.
+- Inversion of Control: Give the control of callback function to the higher order function.
 
 ### Promises
 
@@ -22,9 +46,7 @@ const promise = new Promise()
 
 The `Promise` constructor function takes in a single argument, a (callback) function. This function is going to be passed two arguments, `resolve` and `reject`.
 
-```
-resolve` - a function that allows you to change the status of the promise to `fulfilled
-```
+`resolve` - a function that allows you to change the status of the promise to `fulfilled`
 
 `reject` - a function that allows you to change the status of the promise to `rejected`.
 
@@ -46,49 +68,13 @@ Notice the promise goes from `<pending>` to `<resolved>`.
 
 #### 3) How do you listen for when the status of a promise changes?
 
-In my opinion this is the most important question. It’s cool we know how to create a promise and change its status, but that’s worthless if we don’t know how to do anything after the status changes.
+When you create a `new Promise`, you’re really just creating a plain old JavaScript object. This object can invoke two methods, `then`, and `catch`. 
 
-One thing we haven’t talked about yet is what a promise actually is. When you create a `new Promise`, you’re really just creating a plain old JavaScript object. This object can invoke two methods, `then`, and `catch`. Here’s the key. When the status of the promise changes to `fulfilled`, the function that was passed to `.then` will get invoked. When the status of a promise changes to `rejected`, the function that was passed to `.catch` will be invoked. What this means is that once you create a promise, you’ll pass the function you want to run if the async request is successful to `.then`. You’ll pass the function you want to run if the async request fails to `.catch`.
+- When the status of the promise changes to `fulfilled`, the function that was passed to `.then` will get invoked. 
 
-Let’s take a look at an example. We’ll use `setTimeout` again to change the status of the promise to `fulfilled`after two seconds (2000 milliseconds).
+- When the status of a promise changes to `rejected`, the function that was passed to `.catch` will be invoked. 
 
-```js
-function onSuccess () {
-  console.log('Success!')
-}
-
-function onError () {
-  console.log('💩')
-}
-
-const promise = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve()
-  }, 2000)
-})
-
-promise.then(onSuccess)
-promise.catch(onError)
-```
-
-```js
-function onSuccess () {
-  console.log('Success!')
-}
-
-function onError () {
-  console.log('💩')
-}
-
-const promise = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve()
-  }, 2000)
-})
-
-promise.then(onSuccess)
-promise.catch(onError)
-```
+What this means is that once you create a promise, you’ll pass the function you want to run if the async request is successful to `.then`. You’ll pass the function you want to run if the async request fails to `.catch`.
 
 ```js
 function onSuccess () {
@@ -191,5 +177,69 @@ getUser("tylermcginnis")
   .then(getWeather)
   .then((data) => updateUI(data))
   .catch(showError);
+```
+
+#### async/await
+
+Anytime you add `async` to a function, that function is going to implicitly return a promise.
+
+```js
+async function getPromise(){}
+const promise = getPromise();
+```
+
+Even though `getPromise` is literally empty, it’ll still return a promise since it was an `async` function.
+
+If the `async` function returns a value, that value will also get wrapped in a promise. That means you’ll have to use `.then` to access it.
+
+```js
+async function add (x, y) {
+	return x + y;
+}
+add(2, 3).then((result) => {
+  console.log(result) // 5
+})
+```
+
+When add `async` to a function, it does two things:
+
+- It makes it so the function itself returns a promise.
+
+- It makes it so you can use `await` inside of it.
+
+If use `await` without `async`, get an error
+
+```js
+$("#btn").on("click", () => {
+  const user = await getUser('tylermcginnis') // SyntaxError: await is a reserved word
+  const weather = await getWeather(user.location) // SyntaxError: await is a reserved word
+
+  updateUI({
+    user,
+    weather,
+  })
+})
+```
+
+#### Error Handling
+
+You may have noticed we cheated a little bit. In our original code we had a way to catch any errors using `.catch`. When we switched to Async/Await, we removed that code. 
+
+With Async/Await, the most common approach is to wrap your code in a `try/catch` block to be able to catch the error.
+
+```js
+$("#btn").on("click", async () => {
+  try {
+    const user = await getUser('tylermcginnis')
+    const weather = await getWeather(user.location)
+
+    updateUI({
+      user,
+      weather,
+    })
+  } catch (e) {
+    showError(e)
+  }
+})
 ```
 
